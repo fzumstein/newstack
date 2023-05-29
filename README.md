@@ -65,8 +65,8 @@ Both FastAPI and htmx support WebSockets and ServerSentEvents (SSE) out of the b
 So why Socket.IO?
 
 * python-socket.io provides all the plumbing and tooling in Python that you would otherwise have to build yourself:
-    * `sio.emit` is all it needs to sends a message from a function, a background tasks, or from an external process (via redis or other message queues)
-    * Works with a single uvicorn instance that handles both web app and Socket.IO server for development and simple production setups where a single uvicorn worker is sufficient
+    * `sio.emit` is all it needs to send a message from a function, a background tasks, or from an external process (via redis or other message queues)
+    * Works with a single uvicorn instance that handles both web app and Socket.IO server for development and simple production setups (where a single uvicorn worker for the web app is sufficient)
     * Works with every Python web framework, including synchronous ones (WSGI)
 * Socket.IO provides a few features on top of WebSockets, such as rooms (to send messages to specific clients) and easy reconnection etc., see: https://Socket.IO/docs/v4/#is-socketio-still-needed-today
 * Rendering templates and sending them via WebSockets/SSE isn't really baked into the backend frameworks such as FastAPI
@@ -83,6 +83,12 @@ Fortunately, with Socket.IO in our stack, it was easy enough to build in hot rel
 
 ## Deployment
 
-This demo can easily be deployed to any service capable of running a Docker image. For example, you can deploy to Render with a single click:
+This demo can easily be deployed to any service capable of running a Docker image such as:
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+* Render.com
+* fly.io
+* DigitalOcean App Platform
+* AWS App Runner
+* Heroku
+* Google Cloud Run
+* etc.
