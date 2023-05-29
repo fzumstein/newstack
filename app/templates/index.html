@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newstack</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="alert alert-danger d-none rounded-0 border-0" role="alert" id="socket-alert">
+    Waiting for connection...
+  </div>
+  <div class="container">
+    <h1 class="pt-3">FastAPI + htmx + Socket.IO + Bootstrap</h1>
+    <div class="dropdown pt-2 pb-3">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+        aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false">
+        Add Row
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" hx-post="/add-table-row" hx-swap="none" hx-vals='{"value": "1"}'>1</a>
+        <a class="dropdown-item" hx-post="/add-table-row" hx-swap="none" hx-vals='{"value": "2"}'>2</a>
+        <a class="dropdown-item" hx-post="/add-table-row" hx-swap="none" hx-vals='{"value": "3"}'>3</a>
+      </div>
+    </div>
+    {% include 'table.html' %}
+  </div>
+  <!-- socket.io -->
+  <script>
+    const socket = io({
+      transports: ["websocket"]
+    });
+    // Translate socket.io messages to htmx events
+    socket.on("htmx-trigger", (data) => {
+      htmx.trigger(document.body, data.event);
+    });
+    socket.on("connect", () => {
+      // Remove the disconnect alert
+      const alertDiv = document.querySelector("#socket-alert");
+      alertDiv.classList.add("d-none");
+      // Hot reload
+      {% if hotreload %}
+      if (localStorage.getItem("hotreload")) {
+        location.reload();
+        localStorage.removeItem("hotreload");
+      }
+      {% endif %}
+    });
+    socket.on("disconnect", () => {
+      // Show the disconnect alert
+      const alertDiv = document.querySelector("#socket-alert");
+      alertDiv.classList.remove("d-none");
+      // Hot reload
+      {% if hotreload %}
+      localStorage.setItem("hotreload", true);
+      {% endif %}
+    });
+  </script>
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
+    integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
+    integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

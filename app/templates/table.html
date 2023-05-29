@@ -1,0 +1,18 @@
+<table class="table table-sm table-hover" hx-trigger="update-table from:body" hx-get="/table">
+   <thead class="table-secondary">
+    <tr>
+      <th>First</th>
+      <th>Second</th>
+      <th>First + Second</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in values %}
+    <tr>
+      {% for value in row %}
+      <td>{{ value }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
