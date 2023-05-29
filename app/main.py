@@ -15,12 +15,14 @@ sio = socketio.AsyncServer(async_mode="asgi")
 sio_app = socketio.ASGIApp(sio, app)
 
 # Fake database
-db = [[1, 1]]
+db = []
 
 
 def get_data():
     """Adds the calculated third column"""
-    return [row + [sum((row[0], row[1]))] for row in db]
+    if db:
+        return [row + [sum((row[0], row[1]))] for row in db]
+    return []
 
 
 # Endpoints
@@ -42,6 +44,12 @@ async def table(request: Request):
 @app.post("/add-table-row")
 async def add_table_row(value: int = Form()):
     db.append([value, value])
+    await sio.emit("htmx-trigger", {"event": "update-table"})
+
+
+@app.post("/clear-table")
+async def clear_table(value: int = Form()):
+    db.clear()
     await sio.emit("htmx-trigger", {"event": "update-table"})
 
 

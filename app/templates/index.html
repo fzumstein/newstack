@@ -27,6 +27,7 @@
         <a class="dropdown-item" hx-post="/add-table-row" hx-swap="none" hx-vals='{"value": "2"}'>2</a>
         <a class="dropdown-item" hx-post="/add-table-row" hx-swap="none" hx-vals='{"value": "3"}'>3</a>
       </div>
+      <button class="btn btn-secondary" hx-post="/clear-table" hx-swap="none" hx-vals='{"value": "1"}'>Clear</button>
     </div>
     {% include 'table.html' %}
   </div>
