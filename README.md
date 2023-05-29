@@ -73,7 +73,7 @@ So why Socket.IO?
 
 ## Hot reload
 
-Hot reloading the frontend, i.e., reloading the browser automatically upon changes, isn't really a thing a Python. I was looking at the `middleware` branch of https://github.com/florimondmanca/arel/tree/fm/middleware, but unfortunately, the htmx requests cause an error with calculating the Content-Length header.
+Hot reloading the frontend, i.e., reloading the browser automatically upon changes, isn't really a thing a Python. I was looking at the `middleware` branch of https://github.com/florimondmanca/arel/tree/fm/middleware, but the htmx requests cause an error with calculating the Content-Length header.
 
 Fortunately, with Socket.IO in our stack, it was easy enough to build in hot reloading so you don't need to refresh the browser manually after changing an HTML template. Here's how it works:
 
