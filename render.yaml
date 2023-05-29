@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: newstack
+    env: docker
+    region: ohio
+    plan: free
