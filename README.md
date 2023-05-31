@@ -52,7 +52,7 @@ This is a small demo of how to make modern web development fun again:
 4. `table.html`: htmx causes the table section to react to the `update-table` event (via `hx-trigger`) and to reload itself (via `hx-get`):
 
    ```html
-   <table class="table table-sm table-hover" hx-trigger="update-table from:body" hx-get="/table">
+   <table class="table table-sm table-hover" hx-trigger="update-table from:body" hx-get="/table" hx-swap="outerHTML">
    ```
 
 ## Why Socket.IO?
