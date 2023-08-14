@@ -31,28 +31,30 @@ This is a small demo of how to make modern web development fun again:
 1. `index.html`: when you click the `Add Row` button, htmx sends a POST request via:
 
    ```html
-   <a class="dropdown-item" hx-post="/add-table-row" hx-swap="none" hx-vals='{"value": "1"}'>1</a>
+   <a class="dropdown-item" hx-post="/add-table-row" hx-vals='{"value": "1"}'>1</a>
    ```
    
-   Note that for anchor tags, htmx does not automatically include name/value attributes, so we have to provide them via `hx-vals`. Also, we don't want the default htmx behavior of swapping the dropdown menu with the response, so we set `hx-swap="none"`.
+   Note that for anchor tags, htmx does not automatically include name/value attributes, so we have to provide them via `hx-vals`. Also, we don't want the default htmx behavior of swapping the dropdown menu with the response, so the server returns a 204 (no content).
 
 2. `main.py`: the `add-table-row` endpoint adds the row to the database and sends a Socket.IO message to all connected clients:
 
    ```python
-   await sio.emit("htmx-trigger", {"event": "update-table"})
+   await sio.emit("trigger-event", {"event": "update-table"})
    ```
-3. `index.html`: on the frontend, the Socket.IO message is translated into an htmx event: 
+3. `index.html`: on the frontend, the Socket.IO message is translated into an event: 
 
    ```js
-   socket.on("htmx-trigger", (data) => {
+   socket.on("trigger-event", (data) => {
        htmx.trigger(document.body, data.event);
    });
    ```
 
-4. `table.html`: htmx causes the table section to react to the `update-table` event (via `hx-trigger`) and to reload itself (via `hx-get`):
+4. `index.html` and `_table.html`: htmx causes the table section to react to the `update-table` event (via `hx-trigger`) and to reload itself (via `hx-get`):
 
    ```html
-   <table class="table table-sm table-hover" hx-trigger="update-table from:body" hx-get="/table" hx-swap="outerHTML">
+    <div hx-get="/table" hx-trigger="update-table from:body">
+      {% include '_table.html' %}
+    </div>
    ```
 
 ## Why Socket.IO?
