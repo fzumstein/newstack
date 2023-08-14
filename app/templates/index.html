@@ -36,8 +36,8 @@
     const socket = io({
       transports: ["websocket"]
     });
-    // Translate socket.io messages to htmx events
-    socket.on("htmx-trigger", (data) => {
+    // Translate socket.io message to event
+    socket.on("trigger-event", (data) => {
       htmx.trigger(document.body, data.event);
     });
     socket.on("connect", () => {

@@ -44,13 +44,13 @@ async def table(request: Request):
 @app.post("/add-table-row")
 async def add_table_row(value: int = Form()):
     db.append([value, value])
-    await sio.emit("htmx-trigger", {"event": "update-table"})
+    await sio.emit("trigger-event", {"event": "update-table"})
 
 
 @app.post("/clear-table")
 async def clear_table(value: int = Form()):
     db.clear()
-    await sio.emit("htmx-trigger", {"event": "update-table"})
+    await sio.emit("trigger-event", {"event": "update-table"})
 
 
 # Socket.io
