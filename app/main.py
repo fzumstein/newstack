@@ -1,7 +1,8 @@
 from pathlib import Path
 
 import socketio
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, status
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 hotreload = True
@@ -45,12 +46,14 @@ async def table(request: Request):
 async def add_table_row(value: int = Form()):
     db.append([value, value])
     await sio.emit("trigger-event", {"event": "update-table"})
+    return HTMLResponse(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @app.post("/clear-table")
-async def clear_table(value: int = Form()):
+async def clear_table():
     db.clear()
     await sio.emit("trigger-event", {"event": "update-table"})
+    return HTMLResponse(status_code=status.HTTP_204_NO_CONTENT)
 
 
 # Socket.io
