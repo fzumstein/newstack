@@ -29,7 +29,9 @@
       </div>
       <button class="btn btn-secondary" hx-post="/clear-table" hx-swap="none" hx-vals='{"value": "1"}'>Clear</button>
     </div>
-    {% include 'table.html' %}
+    <div hx-get="/table" hx-trigger="update-table from:body">
+      {% include '_table.html' %}
+    </div>
   </div>
   <!-- socket.io -->
   <script>

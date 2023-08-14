@@ -37,7 +37,7 @@ async def root(request: Request):
 @app.get("/table")
 async def table(request: Request):
     return templates.TemplateResponse(
-        "table.html", {"request": request, "values": get_data()}
+        "_table.html", {"request": request, "values": get_data()}
     )
 
 
